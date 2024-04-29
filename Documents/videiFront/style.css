@@ -1,0 +1,60 @@
+
+.video-generator {
+  font-size: 2.5rem;  
+  font-weight: bold; 
+  text-align: center; 
+  margin-top: 50px; 
+  color: #2d6fb6ca; 
+}
+
+/* style.css */
+
+ 
+input[type="text"],
+select {
+    width: 80%; /* Full width by default */
+    padding: 10px; /* Padding */
+    margin-bottom: 20px; /* Spacing between elements */
+    border: 1px solid #ccc; /* Border */
+    border-radius: 5px; /* Rounded corners */
+    transition: border-color 0.3s ease; /* Smooth transition */
+    background-color: #f2f2f2; /* Background color */
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+/* Modern styling for placeholders */
+input[type="text"]::placeholder,
+select::placeholder {
+    color: #999; /* Placeholder color */
+    font-style: italic; /* Italicize placeholder */
+}
+
+
+input[type="text"]:focus,
+select:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: #66afe9; /* Highlight border color on focus */
+}
+
+input[type="submit"] {
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Button text color */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; /* Darker background color on hover */
+}
+
+#Prompt {
+     height: 200px;
+}
+
+.button-generate {
+    text-align: center;
+
+}
