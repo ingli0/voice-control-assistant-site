@@ -1,0 +1,396 @@
+@import "tailwindcss";
+
+:root {
+  --gold: #c8a96e;
+  --gold-light: #dfc18a;
+  --gold-dark: #a88a50;
+  --bg-primary: #141414;
+  --bg-secondary: #1c1c1c;
+  --bg-card: #202020;
+  --bg-elevated: #272727;
+  --border: #2e2e2e;
+  --border-light: #383838;
+  --text-primary: #e5e5e5;
+  --text-secondary: #909090;
+  --text-muted: #606060;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #444; }
+
+/* ── Admin panel refinements ── */
+/* Smooth page content fade-in */
+main > div { animation: adminPageIn 0.2s ease both; }
+@keyframes adminPageIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Hover lift on admin cards */
+.admin-card {
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.admin-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* Better focus ring admin-wide */
+.admin-panel *:focus-visible {
+  outline: 2px solid rgba(200,169,110,0.5);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ── react-big-calendar dark theme ── */
+.rbc-calendar {
+  background: #1b1b1b;
+  color: var(--text-primary);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  font-family: inherit;
+}
+
+/* Header row (day names) */
+.rbc-header {
+  background: #1c1c1c;
+  color: #484848;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 8px;
+}
+.rbc-header.rbc-today { color: var(--gold) !important; }
+.rbc-header a, .rbc-header a:visited { color: inherit; text-decoration: none; }
+.rbc-header + .rbc-header { border-left: 1px solid rgba(255,255,255,0.03); }
+
+/* Views */
+.rbc-month-view,
+.rbc-time-view,
+.rbc-agenda-view { border: none; background: transparent; }
+
+/* Month grid */
+.rbc-month-row + .rbc-month-row { border-top: 1px solid rgba(255,255,255,0.04); }
+.rbc-day-bg { background: #181818; }
+.rbc-day-bg + .rbc-day-bg { border-left: 1px solid rgba(255,255,255,0.03); }
+.rbc-off-range-bg { background: #181818; }
+.rbc-today { background: rgba(200,169,110,0.05) !important; }
+.rbc-date-cell { color: var(--text-secondary); font-size: 12px; padding: 4px 8px; }
+.rbc-date-cell.rbc-now > a { color: var(--gold); font-weight: 700; }
+.rbc-date-cell > a, .rbc-date-cell > a:visited { color: inherit; }
+.rbc-show-more { color: var(--gold); font-size: 11px; background: transparent; }
+.rbc-row-bg { background: transparent; }
+
+/* Time view */
+.rbc-time-view { border: none; }
+.rbc-time-header { background: #1c1c1c; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.rbc-time-header-content { border-left: 1px solid rgba(255,255,255,0.05); }
+.rbc-time-header.rbc-overflowing { border-right: none; }
+.rbc-time-content {
+  background: #181818;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  overflow-y: auto;
+}
+/* Column separators */
+.rbc-time-content > * + * > * { border-left: 1px solid rgba(255,255,255,0.05); }
+/* 30-min row rule — slightly more visible, dotted feel via short dash */
+.rbc-timeslot-group {
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  min-height: 64px;
+  position: relative;
+}
+/* Odd-hour alternating tint */
+.rbc-time-content .rbc-day-slot:nth-child(odd) .rbc-timeslot-group {
+  background: rgba(255,255,255,0.008);
+}
+.rbc-time-slot {
+  color: var(--text-muted);
+  font-size: 11px;
+  border-top: none;
+}
+/* Time gutter label — sits at the top of each 30-min row */
+.rbc-label {
+  color: #505050;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  padding: 4px 10px 0;
+  vertical-align: top;
+}
+.rbc-time-gutter .rbc-timeslot-group {
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: #1c1c1c;
+}
+/* No sub-slot border since timeslots=1 */
+.rbc-day-slot .rbc-time-slot { border-top: none; }
+.rbc-day-slot .rbc-time-slot:first-child { border-top: none; }
+/* Current time indicator — gold line with glow */
+.rbc-current-time-indicator {
+  background: var(--gold);
+  height: 1px;
+  opacity: 1;
+  box-shadow: 0 0 6px rgba(200,169,110,0.6);
+}
+.rbc-current-time-indicator::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px rgba(200,169,110,0.8);
+}
+
+/* All-day row */
+.rbc-allday-cell { background: #212121; }
+.rbc-row-content { background: transparent; }
+
+/* Events */
+.rbc-event {
+  background: #1e2a1e !important;
+  border: 1px solid #2a4a2a !important;
+  border-radius: 5px !important;
+  font-size: 11px !important;
+  padding: 0 !important;
+  outline: none !important;
+  /* Let the event fill the full slot height cleanly */
+  overflow: hidden !important;
+}
+.rbc-event:focus { outline: none !important; box-shadow: 0 0 0 2px rgba(200,169,110,0.4) !important; }
+.rbc-selected { box-shadow: 0 0 0 2px rgba(200,169,110,0.5) !important; }
+.rbc-event-label { display: none !important; }
+.rbc-event-content { overflow: hidden; height: 100%; }
+/* Ensure event container fills available height */
+.rbc-day-slot .rbc-event { border: 1px solid transparent !important; }
+.rbc-day-slot .rbc-events-container { margin-right: 4px; }
+
+/* Agenda view */
+.rbc-agenda-view table.rbc-agenda-table {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1b1b1b;
+}
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+  background: #212121;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 12px;
+}
+.rbc-agenda-view table.rbc-agenda-table tbody > tr {
+  background: #1b1b1b;
+  border-bottom: 1px solid #272727;
+}
+.rbc-agenda-view table.rbc-agenda-table tbody > tr:hover { background: #212121; }
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td {
+  color: var(--text-primary);
+  padding: 10px 12px;
+  font-size: 13px;
+  border-left: none;
+}
+.rbc-agenda-view table.rbc-agenda-table .rbc-agenda-date-cell,
+.rbc-agenda-view table.rbc-agenda-table .rbc-agenda-time-cell {
+  color: var(--text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.rbc-agenda-empty { color: var(--text-muted); padding: 24px; text-align: center; }
+
+/* Toolbar (hidden — we use custom) */
+.rbc-toolbar { display: none; }
+
+/* Hide service label on short events */
+.rbc-event[style*="height: 1"] .rbc-event-service,
+.rbc-event[style*="height: 2"] .rbc-event-service,
+.rbc-event[style*="height: 3"] .rbc-event-service { display: none; }
+
+/* Slot hover (click to create) */
+.rbc-day-slot .rbc-time-slot:hover,
+.rbc-day-slot .rbc-timeslot-group:hover {
+  background: rgba(200, 169, 110, 0.04);
+  cursor: pointer;
+}
+.rbc-slot-selection {
+  background: rgba(200, 169, 110, 0.15) !important;
+  border: 1px solid rgba(200, 169, 110, 0.4) !important;
+  border-radius: 4px;
+  color: var(--gold);
+  font-size: 11px;
+}
+
+/* Popup overlay */
+.rbc-overlay {
+  background: #292929;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  padding: 8px;
+}
+.rbc-overlay-header {
+  background: #212121;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 4px 4px 0 0;
+  margin: -8px -8px 8px;
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fadeIn 0.3s ease forwards; }
+
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal { animation: revealUp 0.7s cubic-bezier(0.16,1,0.3,1) both; }
+.reveal-delay-1 { animation-delay: 0.1s; }
+.reveal-delay-2 { animation-delay: 0.2s; }
+.reveal-delay-3 { animation-delay: 0.3s; }
+.reveal-delay-4 { animation-delay: 0.4s; }
+.reveal-delay-5 { animation-delay: 0.5s; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+@keyframes shimmer-sweep {
+  from { left: -80%; }
+  to   { left: 130%; }
+}
+
+/* ── Button shimmer ── */
+.btn-gold {
+  position: relative;
+  overflow: hidden;
+}
+.btn-gold::after {
+  content: '';
+  position: absolute;
+  inset-y: 0;
+  left: -80%;
+  width: 60%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: skewX(-15deg);
+  pointer-events: none;
+}
+.btn-gold:hover::after {
+  animation: shimmer-sweep 0.55s ease forwards;
+}
+
+/* ── Service card sweep ── */
+.service-card {
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  inset-x: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+.service-card:hover::before { transform: translateX(100%); }
+
+/* ── Testimonial quote mark ── */
+.testimonial-card {
+  position: relative;
+  overflow: hidden;
+}
+.testimonial-card::before {
+  content: '\201C';
+  position: absolute;
+  top: -12px;
+  left: 14px;
+  font-size: 96px;
+  line-height: 1;
+  color: rgba(200,169,110,0.07);
+  font-family: Georgia, serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Grain noise overlay ── */
+.grain-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.028;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* ── Scanline grid (hero bg) ── */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ── Gold text gradient ── */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #c8a96e 0%, #f0d090 45%, #c8a96e 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gold-shimmer 4s linear infinite;
+}
+@keyframes gold-shimmer {
+  from { background-position: 0% center; }
+  to   { background-position: 200% center; }
+}
+
+/* ── Glow border on CTA ── */
+.glow-gold {
+  box-shadow: 0 0 0 0 rgba(200,169,110,0);
+  transition: box-shadow 0.3s ease;
+}
+.glow-gold:hover {
+  box-shadow: 0 0 24px 4px rgba(200,169,110,0.18), 0 0 0 1px rgba(200,169,110,0.3);
+}
+
+/* ── Decorative number (stats) ── */
+.stat-number {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
