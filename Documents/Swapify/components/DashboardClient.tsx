@@ -17,6 +17,8 @@ import {
   Legend,
 } from "recharts";
 import NavBar from "./NavBar";
+import TasteDNA from "./TasteDNA";
+import AchievementsPanel from "./AchievementsPanel";
 
 interface Stats {
   personal: {
@@ -41,7 +43,7 @@ const PIE_COLORS = ["#1DB954", "#FF6B35", "#4ECDC4", "#FFD93D", "#FF3CAC", "#7B8
 export default function DashboardClient() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"personal" | "global">("personal");
+  const [activeTab, setActiveTab] = useState<"personal" | "global" | "dna" | "achievements">("personal");
 
   useEffect(() => {
     fetch("/api/dashboard")
@@ -64,24 +66,33 @@ export default function DashboardClient() {
         >
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-black text-white">Analytics</h1>
-            <div className="flex gap-1 glass rounded-full p-1">
-              {(["personal", "global"] as const).map((t) => (
+            <div className="flex gap-1 glass rounded-full p-1 overflow-x-auto">
+              {([
+                { id: "personal",     label: "Stats" },
+                { id: "global",       label: "Global" },
+                { id: "dna",          label: "🧬 DNA" },
+                { id: "achievements", label: "🏆 Badges" },
+              ] as const).map((t) => (
                 <button
-                  key={t}
-                  onClick={() => setActiveTab(t)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all capitalize ${
-                    activeTab === t
+                  key={t.id}
+                  onClick={() => setActiveTab(t.id)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap flex-shrink-0 ${
+                    activeTab === t.id
                       ? "bg-spotify-green text-black"
                       : "text-spotify-text hover:text-white"
                   }`}
                 >
-                  {t}
+                  {t.label}
                 </button>
               ))}
             </div>
           </div>
 
-          {loading ? (
+          {activeTab === "dna" ? (
+            <TasteDNA />
+          ) : activeTab === "achievements" ? (
+            <AchievementsPanel />
+          ) : loading ? (
             <DashboardSkeleton />
           ) : !stats ? (
             <div className="text-center py-20 text-spotify-text">Failed to load stats.</div>
