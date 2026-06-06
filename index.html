@@ -2,6 +2,7 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Voice Control Assistant – Αρχική</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -16,7 +17,10 @@
           <span>Φωνητικός έλεγχος για τον υπολογιστή</span>
         </div>
       </div>
-     <nav class="nav-links">
+    <button class="nav-toggle" id="navToggle" aria-label="Μενού">
+        <span></span><span></span><span></span>
+      </button>
+     <nav class="nav-links" id="navLinks">
         <a href="index.html" class="active">Αρχική</a>
         <a href="download.html">Λήψη</a>
         <a href="commands.html">Εντολές</a>
@@ -361,5 +365,8 @@
     </div>
   </footer>
 </div>
+<script>
+(function(){var t=document.getElementById('navToggle'),n=document.getElementById('navLinks');if(t&&n)t.addEventListener('click',function(){t.classList.toggle('open');n.classList.toggle('open');});})();
+</script>
 </body>
 </html>
